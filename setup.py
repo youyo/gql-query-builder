@@ -43,7 +43,7 @@ setup(
         'Programming Language :: Python :: 3',
     ],
     keywords='graphql gql query-builder',
-    packages=find_packages('gql_query'),
+    packages=['gql_query_builder'],
     python_requires='>=3.6',
     project_urls={
         'Source': 'https://github.com/youyo/gql-query-builder',

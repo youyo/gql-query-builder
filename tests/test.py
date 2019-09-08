@@ -1,5 +1,5 @@
 from unittest import TestCase
-from gql_query import GqlQuery
+from gql_query_builder import GqlQuery
 
 
 class TestGqlQuery(TestCase):
