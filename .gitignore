@@ -1,0 +1,15 @@
+build/
+dist/
+*.egg-info/
+*.egg
+*.py[cod]
+__pycache__/
+*.so
+*~
+
+.tox
+.cache
+.direnv/
+.envrc
+.mypy_cache/
+.eggs/
