@@ -69,3 +69,8 @@ class TestGqlQuery(TestCase):
         actual = GqlQuery().fields(['stars', 'commentary']).query('createReview', input={"episode": "$ep", "review": "$review"}).operation(
             'mutation', name='CreateReviewForEpisode', input={"$ep": "Episode!", "$review": "ReviewInput!"}).generate()
         self.assertEqual(expected, actual)
+
+    def test_remove_duplicate_spaces(self):
+        expected = '{ query { hero { name } } }'
+        actual = GqlQuery().remove_duplicate_spaces(' {  query  {  hero  {  name  }  }  } ')
+        self.assertEqual(expected, actual)
