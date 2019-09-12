@@ -1,6 +1,6 @@
 # gql-query-builder
 
-![](https://github.com/youyo/gql-query-builder/workflows/.github/workflows/publish.yaml/badge.svg)
+![](https://github.com/youyo/gql-query-builder/workflows/Publish%20python%20package/badge.svg)
 
 This is a GraphQL query builder.  
 Use with method chain.
