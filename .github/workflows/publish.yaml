@@ -56,4 +56,5 @@ jobs:
           echo -e "password = ${PYPI_PASSWORD}" >> ~/.pypirc
       - name: Publish
         run: |
+          pip install twine
           python setup.py publish
