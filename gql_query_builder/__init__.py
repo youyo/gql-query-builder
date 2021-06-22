@@ -25,27 +25,56 @@ class GqlQuery():
         self.return_field = query
         return self
 
+    @staticmethod
+    def build_input(input: Dict[str, Union[str, int]], initial_str: str):
+        inputs: List[str] = []
+
+        final_str = initial_str
+
+        if input != {}:
+            key = list(input.keys())[0]
+            nested_keys = list()
+
+            while isinstance(input[key], dict):
+                nested_keys.append(key)
+                input = input[key]
+                key = list(input.keys())[0]
+
+            for key, value in input.items():
+                if nested_keys:
+                    inputs.append(f'{key}: "{value}"')  # Nested input won't have double quotes
+
+                else:
+                    inputs.append(f'{key}: {value}')
+
+            final_str += '('
+
+            for key in nested_keys:
+                final_str = final_str + key + ': {'
+
+            final_str = final_str + ", ".join(inputs)
+
+            for _ in nested_keys:
+                final_str += '}'
+
+            final_str += ')'
+
+        return final_str
+
     def query(self, name: str, alias: str = '', input: Dict[str, Union[str, int]] = {}):
         self.query_field = name
-        inputs: List[str] = []
-        if input != {}:
-            for key, value in input.items():
-                inputs.append(f'{key}: {value}')
-            self.query_field = self.query_field + '(' + ", ".join(inputs) + ')'
+        self.query_field = self.build_input(input, self.query_field)
         if alias != '':
             self.query_field = f'{alias}: {self.query_field}'
 
         return self
 
-    def operation(self, query_type: str = 'query', name: str = '', input: Dict[str, Union[str, int]] = {}, queries: List[str] = []):
+    def operation(self, query_type: str = 'query', name: str = '', input: Dict[str, Union[str, int]] = {},
+                  queries: List[str] = []):
         self.operation_field = query_type
-        inputs: List[str] = []
         if name != '':
             self.operation_field = f'{self.operation_field} {name}'
-            if input != {}:
-                for key, value in input.items():
-                    inputs.append(f'{key}: {value}')
-                self.operation_field = self.operation_field + '(' + ", ".join(inputs) + ')'
+            self.operation_field = self.build_input(input, self.operation_field)
 
         if queries != []:
             self.object = self.operation_field + ' { ' + " ".join(queries) + ' }'
