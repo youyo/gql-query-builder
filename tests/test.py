@@ -19,6 +19,13 @@ class TestGqlQuery(TestCase):
         actual = GqlQuery().fields(['name', 'height']).query('human', input={"id": '"1000"'}).operation().generate()
         self.assertEqual(expected, actual)
 
+    def test_query_with_nested_input(self):
+        expected = 'query { human(input: {data: {id: "1000", name: "test"}}) { name height } }'
+        actual = GqlQuery().fields(['name', 'height']).query('human', input={
+            "input": {"data": {"id": "1000", "name": "test"}}}).operation().generate()
+        print(actual)
+        self.assertEqual(expected, actual)
+
     def test_query_input_with_arguments(self):
         expected = 'query { human(id: "1000") { name height(unit: FOOT) } }'
         actual = GqlQuery().fields(['name', 'height(unit: FOOT)']).query(
@@ -66,7 +73,8 @@ class TestGqlQuery(TestCase):
 
     def test_mutation(self):
         expected = 'mutation CreateReviewForEpisode($ep: Episode!, $review: ReviewInput!) { createReview(episode: $ep, review: $review) { stars commentary } }'
-        actual = GqlQuery().fields(['stars', 'commentary']).query('createReview', input={"episode": "$ep", "review": "$review"}).operation(
+        actual = GqlQuery().fields(['stars', 'commentary']).query('createReview', input={"episode": "$ep",
+                                                                                         "review": "$review"}).operation(
             'mutation', name='CreateReviewForEpisode', input={"$ep": "Episode!", "$review": "ReviewInput!"}).generate()
         self.assertEqual(expected, actual)
 

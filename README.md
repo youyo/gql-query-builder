@@ -148,6 +148,23 @@ query {
 """
 ```
 
+- Query with nested input
+
+```python
+from gql_query_builder import GqlQuery
+GqlQuery().fields(['name', 'height']).query('human', input={"input": {"data": {"id": "1000", "name": "test"}}}).operation().generate()
+"""
+query{
+    human(input: {data: {id: "1000", name: "test"}}){
+        human{
+            name, 
+            height
+        }
+    }
+}
+"""
+```
+
 - Query with input and arguments
 
 ```python
