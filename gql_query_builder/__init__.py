@@ -117,16 +117,16 @@ def build_input_2(input: Dict[str, Union[str, int]], initial_str: str, nest= 0, 
     if(not isinstance(val, dict)):
         input.pop(key, {})
         if(bool(input)):
-            final_str+=f" {key}: {val},"
+            final_str+=f' {key}: {val},'
         else: 
             if(nest >0):
-                final_str+=f" {key}: {val} " + " }" * nest
+                final_str+=f' {key}: "{val}" ' + ' }' * nest
             else: 
-                final_str+=f" {key}: {val}"
+                final_str+=f' {key}: "{val}"'
         return build_input_2(input,final_str, nest, other_input)
     else:
         nest= nest+1
-        final_str+=f" {key}:" + ' {'
+        final_str+=f' {key}:' + ' {'
         other_input = without_keys(input, key) 
         return build_input_2(val, final_str, nest, other_input)
 
