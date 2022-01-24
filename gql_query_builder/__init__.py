@@ -101,13 +101,17 @@ class GqlQuery():
         return self.remove_duplicate_spaces(self.object)
 
 
-def build_input_2(input: Dict[str, Union[str, int]], initial_str: str, nest= 0):
+def build_input_2(input: Dict[str, Union[str, int]], initial_str: str, nest= 0, other_input = {}):
     if(initial_str==''):
         final_str = '('+initial_str
     else: 
         final_str = initial_str 
     if(not bool(input)):
-        return final_str + ')'
+        if(bool(other_input)):
+            final_str = final_str + ','
+            return build_input_2(other_input, final_str, nest, {})
+        else:
+            return final_str + ')'
     key = list(input.keys())[0]
     val = input[key]
     if(not isinstance(val, dict)):
@@ -119,8 +123,12 @@ def build_input_2(input: Dict[str, Union[str, int]], initial_str: str, nest= 0):
                 final_str+=f" {key}: {val} " + " }" * nest
             else: 
                 final_str+=f" {key}: {val}"
-        return build_input_2(input,final_str, nest)
+        return build_input_2(input,final_str, nest, other_input)
     else:
         nest= nest+1
         final_str+=f" {key}:" + ' {'
-        return build_input_2(val, final_str, nest)
+        other_input = without_keys(input, key) 
+        return build_input_2(val, final_str, nest, other_input)
+
+def without_keys(d, keys):
+     return {x: d[x] for x in d if x not in keys}
