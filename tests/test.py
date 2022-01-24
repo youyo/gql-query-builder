@@ -23,7 +23,6 @@ class TestGqlQuery(TestCase):
         expected = 'query { human(input: {data: {id: "1000", name: "test"}}) { name height } }'
         actual = GqlQuery().fields(['name', 'height']).query('human', input={
             "input": {"data": {"id": "1000", "name": "test"}}}).operation().generate()
-        print(actual)
         self.assertEqual(expected, actual)
 
     def test_query_input_with_arguments(self):
