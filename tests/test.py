@@ -1,5 +1,6 @@
 from unittest import TestCase
-from gql_query_builder import GqlQuery
+
+from gql_query_builder import GqlQuery, build_input_2
 
 
 class TestGqlQuery(TestCase):
@@ -24,6 +25,15 @@ class TestGqlQuery(TestCase):
         actual = GqlQuery().fields(['name', 'height']).query('human', input={
             "input": {"data": {"id": "1000", "name": "test"}}}).operation().generate()
         self.assertEqual(expected, actual)
+
+    def test_x(self):
+        x = build_input_2({"where": {"id": 1}, "first": {"how": "justin"}}, "")
+        # x = build_input_2({"where": {"id":3, "name":"justin", "inside": {"what": 1}}, "first": 1}, "")
+        # x = build_input_2({"first":1,"where": {"id":3, "name":"justin", "inside": {"what": 1}}}, "")
+        # x = build_input_2({"where": {"id":3, "name":"justin"}}, "")
+        # x = build_input_2({"first": 1, "second":2 }, "")
+        print(x)
+
 
     def test_query_input_with_arguments(self):
         expected = 'query { human(id: "1000") { name height(unit: FOOT) } }'

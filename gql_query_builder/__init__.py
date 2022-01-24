@@ -61,6 +61,8 @@ class GqlQuery():
 
         return final_str
 
+    
+
     def query(self, name: str, alias: str = '', input: Dict[str, Union[str, int]] = {}):
         self.query_field = name
         self.query_field = self.build_input(input, self.query_field)
@@ -97,3 +99,28 @@ class GqlQuery():
                 self.object = self.operation_field + ' { ' + self.query_field + ' ' + self.return_field + ' }'
 
         return self.remove_duplicate_spaces(self.object)
+
+
+def build_input_2(input: Dict[str, Union[str, int]], initial_str: str, nest= 0):
+    if(initial_str==''):
+        final_str = '('+initial_str
+    else: 
+        final_str = initial_str 
+    if(not bool(input)):
+        return final_str + ')'
+    key = list(input.keys())[0]
+    val = input[key]
+    if(not isinstance(val, dict)):
+        input.pop(key, {})
+        if(bool(input)):
+            final_str+=f" {key}: {val},"
+        else: 
+            if(nest >0):
+                final_str+=f" {key}: {val} " + " }" * nest
+            else: 
+                final_str+=f" {key}: {val}"
+        return build_input_2(input,final_str, nest)
+    else:
+        nest= nest+1
+        final_str+=f" {key}:" + ' {'
+        return build_input_2(val, final_str, nest)
