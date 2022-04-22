@@ -4,6 +4,10 @@
 from typing import Dict, List, Union
 
 
+class GqlQueryException(Exception):
+    pass
+
+
 class GqlQuery():
     def __init__(self) -> None:
         self.object: str = ''
@@ -16,6 +20,8 @@ class GqlQuery():
         return " ".join(query.split())
 
     def fields(self, fields: List, name: str = '', condition_expression: str = ''):
+        if not fields:
+            raise GqlQueryException('fields cannot be empty or null')
         query = '{ ' + " ".join(fields) + ' }'
         if name != '':
             if condition_expression != '':
