@@ -1,14 +1,18 @@
 from unittest import TestCase
-from gql_query_builder import GqlQuery
+from gql_query_builder import GqlQuery, GqlQueryException
 
 
 class TestGqlQuery(TestCase):
+    def test_query_empty_fields(self):
+        with self.assertRaises(GqlQueryException):
+            GqlQuery().fields([]).query('hero').generate()
+
     def test_query_a_single_field(self):
         expected = 'query { hero { name } }'
         actual = GqlQuery().fields(['name']).query('hero').operation().generate()
         self.assertEqual(expected, actual)
 
-    def test_query_neting_fields(self):
+    def test_query_nesting_fields(self):
         expected = 'query { hero { name friends { name } } }'
         field_friends = GqlQuery().fields(['name'], name='friends').generate()
         actual = GqlQuery().fields(['name', field_friends]).query('hero').operation('query').generate()
