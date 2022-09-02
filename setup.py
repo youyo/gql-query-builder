@@ -1,12 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-from setuptools import setup, Command, find_packages
-from pip._internal.req import parse_requirements
+from setuptools import setup, Command
 import os
-
-install_reqs = parse_requirements('requirements.txt', session='hack')
-requires = [str(ir.req) for ir in install_reqs]
 
 
 class PublishCommand(Command):
@@ -33,7 +29,7 @@ setup(
     url='https://github.com/youyo/gql-query-builder',
     author='youyo',
     author_email='1003ni2@gmail.com',
-    install_requires=requires,
+    install_requires=[],
     license="MIT License",
     classifiers=[
         'Development Status :: 3 - Alpha',
